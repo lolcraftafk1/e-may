@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <style>
+            *{
+                font-family: 'Montserrat', sans-serif;
+            }
+            body{
+                margin: 0;
+                text-align: center;
+            }
+            body > div{
+                margin: 2vw 3vw 2vw 3vw;
+            }
+            .container{
+                background-color: #F0F1F9;
+            }
+            td{
+                border-bottom: #D4D7ED solid 2px;
+                border-collapse: collapse;
+            }
+            table{
+                padding: 2vw 3vw 2vw 3vw;
+                text-align: center;
+                width: 100%;
+            }
+            h1{
+                text-align: center;
+            }
+            h2{
+                text-align: center;
+            }
+        </style>
+    </head>
+    <body>
+        <div>
+            <div class="container">
+                <h1 style="padding-top: 2vw;">Thanks for buying E-May, {{name}}!</h1>
+                <h2>This is your reciept for your last buying in E-May!</h2>
+                <table>
+                    <thead>
+                        <td>Name</td>
+                        <td>Price</td>
+                        <td>Amount</td>
+                    </thead>
+                    {% for item in items%}
+                    <tr>
+                        <td>{{item.name}}</td>
+                        <td>{{item.price}}</td>
+                        <td>{{item.amount}}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </body>
+</html>

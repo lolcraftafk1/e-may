@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous">
+        <link rel="stylesheet" href="{{ url_for('static',filename='style.css') }}">
+        <!-- load OpusMediaRecorder.umd.js. OpusMediaRecorder will be loaded. -->
+        <script src="https://cdn.jsdelivr.net/npm/opus-media-recorder@latest/OpusMediaRecorder.umd.js"></script>
+        <!-- load encoderWorker.umd.js. This should be after OpusMediaRecorder. -->
+        <!-- This script tag will create OpusMediaRecorder.encoderWorker. -->
+        <script src="https://cdn.jsdelivr.net/npm/opus-media-recorder@latest/encoderWorker.umd.js"></script>
+        <script>
+            // If you already load encoderWorker.js using <script> tag,
+            // you don't need to define encoderWorkerFactory.
+            const workerOptions = {
+            OggOpusEncoderWasmPath: 'https://cdn.jsdelivr.net/npm/opus-media-recorder@latest/OggOpusEncoder.wasm',
+            WebMOpusEncoderWasmPath: 'https://cdn.jsdelivr.net/npm/opus-media-recorder@latest/WebMOpusEncoder.wasm'
+            };
+            
+            // Replace MediaRecorder
+            window.MediaRecorder = OpusMediaRecorder;
+        </script>
+    </head>
+    <body>
+        <header>
+            <div class="header">
+                <h1 class="menu-button"><a href="/">E-may</a></h1>
+                <nav>
+                    <span class="menu-button"><a href="/">Home</a></span>
+                    <span class="menu-button"><a href="/">Cart</a></span>
+                    <span class="menu-button"><a href="/search">Search</a></span>
+                </nav>
+            </div>
+        </header>
+        <div class="smart">
+            <div style="position: relative;width: 7vw; height: 7vw;"><a class="record" id="record"><i class="fas fa-microphone"></i></a></div>
+            <div>
+                <div class="smart-text">
+                    {% if search == None %}
+                    <a class="texta">Some magic is going to happen</a>
+                    {% else %}
+                    <a class="texta" contenteditable="true" id="text">{{search}}</a>
+                    {% endif %}
+                </div>
+                <div class="search-button" onclick="window.location = '/search/'+document.getElementById('text').innerText"><i class="far fa-paper-plane"></i></div>
+        </div>
+        {% if items != None %}
+                    <div class="shop">
+                        {% for item in items %}
+                        <div class="shop item">
+                            <a href="/product/{{item.id}}"><img src="{{item.img}}"></a>
+                            <a href="/product/{{item.id}}"></a><h1>{{item.name}}</h1></a>
+                            <a>{{item.price}} ₪</a>
+                            <br>
+                            <a class="button" href="/add_to_cart/{{item.id}}">Add to cart</a>
+                        </div>
+                        {%endfor%}
+                    </div>
+                {% endif %}
+        <script>
+            
+            var xhr = new XMLHttpRequest();
+            
+            const handleSuccess = function(stream) {
+                const options = {mimeType: 'audio/wav'};
+                const recordedChunks = [];
+                var chunksText = "";
+                const mediaRecorder = new MediaRecorder(stream, options);
+                var record = document.getElementById("record");
+
+                mediaRecorder.addEventListener('dataavailable', function(e) {
+                if (e.data.size > 0) {
+                    recordedChunks.push(e.data);
+                }
+                });
+                record.addEventListener("click",function (e) {
+                if(record.classList.contains("active")){
+                    record.classList.remove("active");
+                    mediaRecorder.stop();
+                } else {
+                    record.classList.add("active");
+                    mediaRecorder.start();
+                }
+            })
+                mediaRecorder.addEventListener('stop', function() {
+                    var xhr=new XMLHttpRequest();
+                    var file = new File([new Blob(recordedChunks)], "audio.wav");
+                    xhr.open("PUT", "/upload");
+                    xhr.send(file);
+                    xhr.onreadystatechange = function() {
+                    window.location = "/search/sent"
+                    }
+                });
+                
+
+            };
+            navigator.mediaDevices.getUserMedia({ audio: true, video: false })
+                    .then(handleSuccess);
+        </script>
+    </body>
+</html>

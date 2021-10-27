@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="static/style.css">
+    <title>e-may | cart</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <header>
+        <div class="header">
+            <h1 class="menu-button"><a href="/">E-may</a></h1>
+            <nav>
+                <span class="menu-button"><a href="/">Home</a></span>
+                <span class="menu-button"><a href="/cart">Cart</a></span>
+                <span class="menu-button"><a href="/search">Search</a></span>
+            </nav>
+        </div>
+    </header>
+    <div class="cart">
+        {% if items %}
+            {% for item in items %}
+                <div class="cart-product">
+                    <div><img width="100%" src="{{item.img}}">
+                    </div>
+                    <div style="position:absolute;padding-top: 1vw;">
+                        <h1>{{item.name}}</h1>
+                        <hr color="black">
+                        <p>{{item.description}}</p>
+                        <a>₪{{item.price}}</a>
+                        <br>
+                        <br>
+                        <a>{{item.amount}}</a>
+                    </div>
+                </div>
+                <br>
+                <br>                
+            {% endfor %}
+            <a class="button" href="{{ url_for('submit') }}">Submit</a>
+        {% else %}
+            <a>You currently have nothing in the cart!</a>
+        {% endif %}
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>E-May | Product</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <header>
+        <div class="header">
+            <h1 class="menu-button"><a href="/">E-may</a></h1>
+            <nav>
+                <span class="menu-button"><a href="/">Home</a></span>
+                <span class="menu-button"><a href="/cart">Cart</a></span>
+                <span class="menu-button"><a href="/search">Search</a></span>
+            </nav>
+        </div>
+    </header>
+    <div class="product">
+        <div><img src="{{product.img}}"></div>
+        <div style="position:absolute;padding-top: 1vw;">
+            <h1>{{product.name}}</h1>
+            <hr color="black">
+            <p>{{product.description}}</p>
+            <a>₪{{product.price}}</a>
+            <br>
+            <br>
+            <br>
+            <a class="button" href="{{ url_for('addToCart', id=product.id)}}">Add to cart</a>
+        </div>
+    </div>
+</body>
+
+</html>

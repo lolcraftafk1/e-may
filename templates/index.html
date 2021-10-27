@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="{{ url_for('static',filename='style.css') }}">
+    </head>
+    <body>
+        <header>
+            <div class="header">
+                <h1 class="menu-button"><a href="/">E-may</a></h1>
+                <nav>
+                    <span class="menu-button"><a href="/">Home</a></span>
+                    <span class="menu-button"><a href="/cart">Cart</a></span>
+                    <span class="menu-button"><a href="/search">Search</a></span>
+                </nav>
+            </div>
+        </header>
+        <img src="{{ url_for('static',filename='media/emay.png') }}" style="width: 100%;height: 70vh;object-fit:cover;border-bottom: solid 2px #373737;">
+        <div class="shop">
+            {% for item in items %}
+                <div class="shop item">
+                    <a href="/product/{{item.id}}"><img src="{{item.img}}"></a>
+                    <a href="/product/{{item.id}}"></a><h1>{{item.name}}</h1></a>
+                    <a>{{item.price}} ₪</a>
+                    <br>
+                    <a class="button" href="/add_to_cart/{{item.id}}">Add to cart</a>
+                </div>
+            {%endfor%}
+        </div>
+    </body>
+</html>
